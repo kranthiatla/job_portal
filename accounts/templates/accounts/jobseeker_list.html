@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Job Seekers</h2>
+<ul>
+    {% for j in jobseekers %}
+        <li>{{ j.username }} - {{ j.email }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

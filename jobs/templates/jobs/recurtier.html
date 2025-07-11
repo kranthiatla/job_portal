@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="mb-4">Recruiter Dashboard</h2>
+
+<h4>Your Posted Jobs</h4>
+<ul class="list-group mb-4">
+  {% for job in jobs %}
+    <li class="list-group-item">
+      <strong>{{ job.title }}</strong> – {{ job.location }}
+    </li>
+  {% empty %}
+    <li class="list-group-item">You haven't posted any jobs yet.</li>
+  {% endfor %}
+</ul>
+
+<h4>Applications Received</h4>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Job Title</th>
+      <th>Applicant</th>
+      <th>Email</th>
+      <th>Resume</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for app in applications %}
+    <tr>
+      <td>{{ app.job.title }}</td>
+      <td>{{ app.applicant.username }}</td>
+      <td>{{ app.applicant.email }}</td>
+      <td><a href="{{ app.resume.url }}" target="_blank">Download</a></td>
+    </tr>
+    {% empty %}
+      <tr><td colspan="4">No applications received yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

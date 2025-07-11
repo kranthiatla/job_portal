@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- 🔥 Hero Banner -->
+<div class="p-5 mb-4 bg-light rounded-3 text-center">
+  <div class="container py-5">
+    <h1 class="display-5 fw-bold">Find Your Dream Job</h1>
+    <p class="fs-4">Apply to thousands of jobs posted by top recruiters</p>
+    {% if user.is_recruiter %}
+      <a href="{% url 'post_job' %}" class="btn btn-success btn-lg">Post a Job</a>
+    {% endif %}
+  </div>
+</div>
+
+<!-- 🔍 Search Box -->
+<form method="get" class="d-flex justify-content-end mb-3">
+  <input type="text" name="search" placeholder="Search job or company..." class="form-control w-50 me-2">
+  <button class="btn btn-outline-primary">Search</button>
+</form>
+
+<!-- 💼 Job Cards -->
+<div class="row">
+  {% for job in jobs %}
+  <div class="col-md-6 col-lg-4">
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5 class="card-title">{{ job.title }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{ job.company }}</h6>
+        <p class="card-text"><strong>Location:</strong> {{ job.location }}</p>
+        {% if user.is_jobseeker %}
+          <a href="{% url 'apply_job' job.id %}" class="btn btn-sm btn-primary">Apply</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% empty %}
+    <p>No jobs available.</p>
+  {% endfor %}
+</div>
+
+{% endblock %}
