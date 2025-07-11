@@ -8,6 +8,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import make_password
 import json
+from accounts.tasks import send_welcome_email
+
 # from accounts.views import CustomLogoutView
 
 
@@ -18,6 +20,7 @@ def recruiter_register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
+            send_welcome_email.delay(user.email, user.username)
             return redirect('dashboard')
     else:
         form = RecruiterSignUpForm()
@@ -108,3 +111,11 @@ def dashboard(request):
         return render(request, 'accounts/jobseeker_dashboard.html', context)
     else:
         return redirect('login')
+
+# def recruiter_register(request):
+#     ...
+#     if form.is_valid():
+#         user = form.save()
+#         login(request, user)
+#         send_welcome_email.delay(user.username)  # 🔁 background task
+#         return redirect('dashboard')
